@@ -80,7 +80,10 @@ Best to use underline or other visual designator to avoid that and color contras
 
 For screen readers, semantic markup is key. 
 
-### Headings
+# Semantics
+
+## Headings
+
 In WebAIM surveys, 65% of screen reader users navigate using headings. Majority
 use heading levels too. Looking at headings alone should basically show a table of contents for the page.
 WCAG doesn't require proper heading structure until AAA, but it's very important.
@@ -96,9 +99,63 @@ Guidelines:
 
 It's OK to style headings visually to maintain semantics within the design (`<h2 class="h4">`).
 
-### Forms
+## Forms
 
 1. Use labels for inputs, text areas, select menus, checkboxes, radio buttons.
    (Never use `<label`> for anything else - it'll be ignored by screen readers.)
    Explicit labeling (`<label for="thing"><input id="thing" />`) is a little more robust
    than implicit labeling (`<label><input /></label>`).
+
+## Tables
+
+1. Caption: if there is one, it should be a `<caption>`.
+2. Use `<th>` table headers.
+3. Specify scope for table headers (`<th scope="row">`).
+4. Avoid empty `<th>`. If you have an empty heading cell in the corner, make it
+   a `<td>`.
+5. `<thead>`, `<tfoot>`, and `<tbody>` have no accessibility impact. Screen
+   readers will follow the document order.
+6. Don't use table `summary` (dropped in HTML 5).
+
+## Alternative text
+
+- Read by screen readers and search engines.
+- Alternative to images when images are disabled or not supported.
+- Provides semantic meaning and description to images. 
+- Difficult because it's so subjective.
+
+Equivalent alternative text provides the content and/or function of an image,
+very rarely a description of the image. Probably `<img alt="John Smith">` rather than
+`<img alt="Tall man with brown hair">`.
+
+Ask yourself: if you couldn't use a picture, what text would you put in its
+place?
+
+Alternative text can be presented in:
+1. The `alt` attribute of `<img>`.
+2. The context or surroundings of the image itself (e.g., a caption).
+
+Alternative text should:
+1. Be accurate and equivalent. Usually any text in the image should be
+represented in the alt text.
+2. Be succint. In most cases, a few words should be sufficient. If it's
+   multiple sentences, there's probably a better of way of presenting the
+   content.
+3. Not be redundant.
+4. Not use the phrases "image of ..." or "graphic of ..." to describe the
+   image.
+
+ Use empty `alt` tag to indicate that:
+ 1. The image is decorative and doesn't convey content or,
+ 2. The content of the image is declared elsewhere.
+
+ For complex images (charts and graphs):
+ 1. Provide alternative in context or a link to a longer description.
+ 2. Main image should still have some alt text ("Pie chart representing...").
+
+# Tidbits
+- Whether or not your site should work without JavaScript is more of a usability
+question than an accessibility question. In WebAIM surveys, 98%+ of users had
+JavaScript enabled, which is the same as the general population.
+
+
