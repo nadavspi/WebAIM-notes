@@ -496,13 +496,107 @@ username must be 8-15 characters".
 
 # Evaluating accessibility
 
+[Quick reference](http://webaim.org/resources/evalquickref/).
+
 Automated tools have their place, but only humans can truly evaulate accessibility.
 
 - Automated tools. E.g., [WAVE](http://wave.webaim.org/).
   - Identify obvious issues.
-  - Guide manual testing.
+  - Can be used to guide manual testing.
 - Use a checklist to faciliate manual testing.
+  - [WCAG 2.0](http://webaim.org/standards/wcag/checklist)
+  - [Section 508](http://webaim.org/standards/508/checklist)
 - Check keyboard accessibility.
+  - Is all functionality available using only the keyboard? (Tab, shift-tab,
+    enter, etc.)
+  - Make sure navigation order is logical.
+  - Is there a visible keyboard focus indicator?
 - Test in a screen reader.
+  - Tutorials: [JAWS](http://webaim.org/articles/jaws/), [NVDA](http://webaim.org/articles/nvda/), [VoiceOver](http://webaim.org/articles/voiceover/).
+  - JAWS, although the most commonly used, is a beast. Consider using something lighter like NVDA or VoiceOver
+    for testing.
+  - Focus on navigation, forms, document structure, and dynamic content.
+  - Try testing without the mouse or monitor.
+  - Don't worry about pronunciation.
+  - Sometimes it's the screen reader's fault. All of them have bugs. In
+    general, be cautious about adding workarounds for screen reader bugs.
+  - Start the screen reader first, and then open the browser. (Especially with
+    JAWS.)
+  - Common combinations:
+    - JAWS + IE (most common)
+    - VoiceOver + Safari
+    - NVDA + FireFox
+    - Chrome/ChromeVox is very rarely used. Be cautious in using it for
+      testing.
+  - Generally, it's okay to test with one of the common combinations. In most
+    cases, something that works in one screen reader will be okay in others.
 - Conduct user testing.
+  - Don't conduct accessibility testing with users with disability. Do user
+    testing, and *include* users with disabilities.
+  - If you do user testing with disabled users, make sure you have some base
+    level of accessibility together beforehand.
 
+# Evolution of web accessibility guidelines
+
+## WCAG 1.0
+
+- Finalized in 1999.
+- Checkpoint driven.
+- Level A, AA, and AAA checkpoints.
+- Specific to HTML.
+
+## Section 508
+
+- Finalized in 2001, based WCAG 1.0 Level A.
+- Applies to US federal government.
+- Not recommended as a standard. 
+- Legalistic - easy to verify compliance.
+- Very minimal standard: a compliant site can still be very inaccessible.
+- Many states have adopted the guidelines (even if the law doesn't apply).
+- Currently being updated.
+  - Technical standards finalized January 2017.
+  - Incorporates WCAG 2.0 by reference. (If you meet WCAG 2.0 A && AA for web
+    content, you'll meet new standards for 508.)
+  - January 2018 effective date for new content.
+
+## WCAG 2.0
+
+- Finalized December 2008.
+- Based on [principles](#principles).
+- Technology agnostic.
+  - Better over time, but perhaps more difficult to interpret.
+
+### Normative
+
+- Hierarchy: Principles -> Guidelines -> Success Criteria.
+  - e.g., 1. Perceivable -> 1.1 Text Alternatives -> 1.1.1 Non-text Content 
+- "Required for conformance"
+- Conformance (and levels) based on Success Criteria.
+
+### Non-normative
+- "For information purposes and not required conformance".
+- Supporting materials for the normative material.
+- Over a thousand pages. A good indication that WCAG doesn't meet its own
+  principle of Understanable.
+- "Understanding..." and "How to meet..." for each normative section.
+
+## WCAG 2.1 
+
+- In progress. 
+- Will enhance 2.0
+
+## Americans with Disabilities Act (ADA)
+
+- Pre-dates the web
+- Title I, II, III
+  1. Employment
+  2. State and local gorvenments
+  3. Public and commercial facilities
+    - "Places of public accommodation"
+    - DOJ has said that the web counts as a place of public accomodation, but
+      there is no ADA standard for web accessibility yet.
+- Current proposal to define ADA and web accessibility
+  - Whatever the standards end up being, they won't be more stringent than WCAG
+    2.0 A & AA.
+- DOJ-negotiated settlements (e.g., H&R Block and Louisiana Tech) have required
+  WCAG 2.0 A & AA
