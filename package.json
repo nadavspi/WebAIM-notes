@@ -1,0 +1,17 @@
+{
+  "name": "WebAIM-notes",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": {
+    "url": "git@github.com:nadavspi/WebAIM-notes.git",
+    "type": "git"
+  },
+  "author": "Nadav Spiegelman <me@nadav.name>",
+  "license": "MIT",
+  "dependencies": {
+    "doctoc": "^1.2.0"
+  },
+  "scripts": {
+    "toc": "doctoc README.md --github"
+  }
+}
