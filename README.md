@@ -149,6 +149,35 @@ than implicit labeling (`<label><input /></label>`).
 
 See: [`aria-labelledby`](#aria-labelledby).
 
+##### Form validation and error recovery
+
+- Avoid...
+  - Collecting unnecessary information.
+  - Forcing users to provide formatting.
+- Identify
+  - Let the users know there's an error.
+  - Direct users to errors.
+  - Describe the errors.
+- If possible, suggest how to fix the error.
+- Important actions (e.g., financial) should be reversible/checked/confirmed.
+
+###### Form validation types
+
+- Use `aria-describedby` to associate the input and the error message.
+- Use `aria-invalid` to indicate an invalid input to screen readers. 
+
+Approaches:
+
+1. Errors at the top
+  - Set focus to the error container.
+  - Issue: error messages are isolated from the fields themselves. Link from
+    the message to the input.
+2. Alert, then focus
+  - `window.alert` and then focus on the input.
+  - Extremely intrusive, but can be useful for forms with few but important fields.
+3. Inline errors
+  - Issue: you could focus on the first invalid field, but screen reader users
+    have to hunt for all of the other invalid fields. Make sure to use `aria-invalid` to help. Technically compliant, but probably less friendly functionally than errors at the top with links.
 
 #### Tables
 
@@ -424,3 +453,56 @@ label another:
 
 If `name`'s value is Cindy, the second input should be read "Cindy phone
 number, edit".
+
+## `aria-describedby`
+
+- Adds an additional level of description beyond labels. 
+- There is no aria-description. 
+- Target content is read as a string regardless of semantics. E.g., don't use a table
+  as a description.
+
+```html
+<label for="user">Username</label>
+<input id="user" type="text" aria-describedby="username-details">
+<span id="usernamedetails">Username must be 8-15 characters.</span>
+```
+
+Screen reader will read label, input type, description. "Username, edit,
+username must be 8-15 characters".
+
+## `aria-required`
+
+`<input aria-required="true">`
+
+- Used by screen readers to announce that an input is required.
+- Doesn't actually change functionality, just an indicator.
+- Not necessary if you're using `required` or if there isn't a visual indicator that the field is required.
+
+## `aria-invalid`
+
+`<input aria-invalid="true">`
+
+- Indicates that the input is invalid or broken.
+- Use in conjunction with a visual indicator.
+- Can be used for styling. `[aria-invalid="true"] { border: 2px solid red; }`
+
+## `aria-disabled`
+
+- `aria-disabled` elements are keyboard accessible, whereas `disabled` elements
+  are removed from keyboard navigation. 
+- Arguably `aria-disabled` is better than `disabled` for the submit button of
+  an invalid form. However, `aria-disabled` doesn't actually disable the button so you'd need to
+  preventDefault.
+
+# Evaluating accessibility
+
+Automated tools have their place, but only humans can truly evaulate accessibility.
+
+- Automated tools. E.g., [WAVE](http://wave.webaim.org/).
+  - Identify obvious issues.
+  - Guide manual testing.
+- Use a checklist to faciliate manual testing.
+- Check keyboard accessibility.
+- Test in a screen reader.
+- Conduct user testing.
+
