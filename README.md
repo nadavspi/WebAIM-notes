@@ -360,7 +360,7 @@ For a page part in a different language: `<div lang="fr">`
 
 - Very important for screen reader users that are set up to read in multiple languages. 
 - If you have a language switcher, make sure to mark up the language link for
-  that language. `<a href="ja">日本語</a>`
+  that language. `<a lang="ja">日本語</a>`
 
 ## Visually hiding content
 
