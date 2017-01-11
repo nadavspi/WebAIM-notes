@@ -60,6 +60,9 @@
   - [WCAG 1.0](#wcag-10)
   - [Section 508](#section-508)
   - [WCAG 2.0](#wcag-20)
+    - [Success Criteria 1.3.1 - Info and Relationships](#success-criteria-131---info-and-relationships)
+    - [SC 1.4.4 Resize text](#sc-144-resize-text)
+    - [SC 2.2.2 Pause, Stop, Hide](#sc-222-pause-stop-hide)
     - [Normative](#normative)
     - [Non-normative](#non-normative)
   - [WCAG 2.1](#wcag-21)
@@ -634,6 +637,27 @@ Automated tools have their place, but only humans can truly evaulate accessibili
 - Based on [principles](#principles).
 - Technology agnostic.
   - Better over time, but perhaps more difficult to interpret.
+
+### Success Criteria 1.3.1 - Info and Relationships
+
+> Information, structure, and relationships conveyed through presentation can be programatically determined or are available in text. (Level A)
+  - Includes proper labels, heading, etc.
+
+### SC 1.4.4 Resize text
+
+> Except for captions and images of text, text can be resized without assistive technology up to 200 percent without loss of content or functionality. (Level AA)
+
+- Users can increase text size rather than just zooming everything. 
+- Very few users will increase text size 200%. Testing 130-150% is sufficient.
+- Beware of fixed height in CSS.
+
+### SC 2.2.2 Pause, Stop, Hide
+
+> For moving, blinking, scrolling, or auto-updating information, all of the following are true: (Level A)
+> Moving, blinking, scrolling: For any moving, blinking or scrolling information that (1) starts automatically, (2) lasts more than five seconds, and (3) is presented in parallel with other content, there is a mechanism for the user to pause, stop, or hide it unless the movement, blinking, or scrolling is part of an activity where it is essential; and
+> Auto-updating: For any auto-updating information that (1) starts automatically and (2) is presented in parallel with other content, there is a mechanism for the user to pause, stop, or hide it or to control the frequency of the update unless the auto-updating is part of an activity where it is essential.
+
+Users need to be able to pause carousels, for example.
 
 ### Normative
 
