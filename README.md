@@ -80,10 +80,9 @@ Best to use underline or other visual designator to avoid that and color contras
 
 ## Blindness
 
-For screen readers, semantic markup is key. Most screen reader users have some
+For screen readers, semantic markup is key. Most/many screen reader users have some
 vision and may use a screen reader and a screen magnifier at the same time.
 Some have full vision.
-
 
 ### Semantics
 
@@ -109,10 +108,37 @@ It's OK to style headings visually to maintain semantics within the design (`<h2
 
 #### Forms
 
-1. Use labels for inputs, text areas, select menus, checkboxes, radio buttons.
-   (Never use `<label`> for anything else - it'll be ignored by screen readers.)
-   Explicit labeling (`<label for="thing"><input id="thing" />`) is a little more robust
-   than implicit labeling (`<label><input /></label>`).
+- Use labels for inputs, text areas, select menus, checkboxes, radio buttons.
+- Never use `<label`> for anything else - it'll be ignored by screen readers.
+- Explicit labeling (`<label for="thing"><input id="thing" />`) is a little more robust
+than implicit labeling (`<label><input /></label>`).
+
+##### Hidden labels
+
+- A visually hidden label is OK.
+- If there's no `<label>`, `title` on the input is interpreted as the label by
+  screen readers. Equivalent to a visually hidden label but adds the tooltip
+  for mouse users. `<input title="Search Terms" type="search" />`
+
+##### Placeholder
+
+- Can be used for advisory information.
+- Do not use placeholder as the only mechanism for labeling a control. Most screen readers tend to read it if there isn't a label, but you shouldn't rely on it.
+- Low contrast. Increasing the contrast can make it look like a value instead
+  of a placeholder.
+- Disappears once filled in. Can be a problem for validation, e.g., "MM/YY" as
+  placeholder, "Enter a valid expiration date" in validation.
+
+##### Other form issues
+
+- Avoid JavaScript "jump" menus (select menus that go to a different page on
+  change).
+- Avoid `multiple` select menus. Usability issues and mostly inaccessible to
+  keyboard users.
+- Be very careful with `autofocus`.
+- Be very careful with "Reset" buttons. (You probably don't need it.)
+- `<input type="image">` must have alternative text.
+- You'll never be able to re-create all of the accessibility of a `<select>`.
 
 #### Tables
 
@@ -224,13 +250,14 @@ Rule of thumb: if it's annoying, probably don't do it.
 
 ### Keyboard navigation
 
-There many users that use the keyboard for navigation, few that use *only* the
-keyboard for navigation. Most screen readers will primarily use the keyboard to
-navigate. 
-
-On Mac, enable Full Keyboard Access -> All controls in keyboard settings.
-
+- There many users that use the keyboard for navigation, few that use *only* the
+keyboard for navigation.
+- Most screen readers will primarily use the keyboard to navigate. 
 - Don't ignore keyboard navigation for small viewports; many users use external keyboards on their phones.
+- On Mac, enable Full Keyboard Access -> All controls in keyboard settings.
+- [Flying Focus](https://github.com/NV/flying-focus): JavaScript for adding
+transitions between focus states. Also available as a Chrome extension (useful
+for testing).
 
 #### Links
 - Don't remove keyboard focus indicator (`outline`) from links. (WCAG AA
@@ -241,10 +268,17 @@ On Mac, enable Full Keyboard Access -> All controls in keyboard settings.
 
 #### Skip links
 
+A link to "skip to main content" from the beginning of the document.
+
 - Primarily benefit sighted keyboard users (because screen reader users have many
 other ways of navigating).
 - A bit of a hack, but recommended until browsers allow navigation by
   headings/landmarks.
+- It's fine to visually hide it to avoid disrupting design/usability for users that
+  don't need it. (Don't use `display: none` though - that's hidden from screen
+  reader and keyboard users altogether.)
+- Should be visually distinctive to make it apparent (think of a low vision
+  user with motor disabilities)
 
 #### Standard keystrokes
 
@@ -257,6 +291,24 @@ other ways of navigating).
 - Tree/application menu: up/down, left/right to expand/collapse
 - Tabs: hit `tab` once to enter the group of tabs, up/down or left/right to select individual
   tabs
+
+#### Accesskey
+
+`<a href="search" accesskey="s">`
+
+Don't do it.
+
+- Activation of accesskey varies by browser.
+- There is no standard set of keys.
+- Difficult to avoid conflicts with UA shortcuts (browser add-ons, screen
+  readers, etc.)
+
+### Timed activities
+
+- If a time constraint (e.g., session timeout) is necessary, make sure the
+  users have enough time.
+- Make sure the users knows what the time constraints are.
+- Maybe prompt the user before time is up and allow them to extend.
 
 # Strategy / principles
 
@@ -273,12 +325,61 @@ A separate accessible or text-only version of the site is probably a bad idea.
 - Thinking about accessibility & semantic markup for your website improves the
   experience for everyone.
 
+# Odds & ends
 
-# Tidbits
 - Whether or not your site should work without JavaScript is more of a usability
 question than an accessibility question. In WebAIM surveys, 98%+ of users had
 JavaScript enabled, which is the same as the general population.
 - Remember that we are web experts and our experience of the web is very
   different than our users's experience (especially on things that we built).
+- Many users with disabilities have multiple disabilities.
 
+## Acronyms & abbreviations
+
+- Expand unknown acronyms/abbreviations at first instance. E.g., "Per the Web
+  Content Accessibility Guidelines (WCAG)..."
+- Don't worry about pronunciation for screen readers or try to modify it for
+  them (e.g., N.A.S.A. instead of NASA). It varies by screen reader, user settings, etc. Screen reader users
+  become accustomed to idiosyncratic pronunciations.
+- Optionally use `<abbr>` on one instance if you want. Probably only accessible for mouse 
+  users. (But if your abbrevation requires explanation, it might make sense to
+  define it in text.)
+
+## Fonts
+
+- Font size units (px, em, rem, etc.) don't have an accessibility impact.
+- Web fonts are fine.
+- Choose good, legible fonts.
+- Be careful with ALL CAPS. Use `text-transform`. (Most screen readers don't
+  distinguish ALL CAPS and `text-transform` now, but hopefully in the future.)
+
+## Language
+
+For the page: `<html lang="en">`
+For a page part in a different language: `<div lang="fr">`
+
+- Very important for screen reader users that are set up to read in multiple languages. 
+- If you have a language switcher, make sure to mark up the language link for
+  that language. `<a href="ja">日本語</a>`
+
+## Visually hiding content
+
+- `display: none` and `visibility: hidden` hide from everyone.
+- Avoid 0 pixels, setting same color as background, etc. Behavior is
+  inconsistent.
+- Use off-screen absolute positioning or `clip` with CSS for screen readers.
+- Use judiciously. Typically just use for brief cues or indicators that are
+  useful for screen reader users. E.g., "You are here:" before breadcrumbs.
+- Make sure to keep visually hidden content up to date.
+- Visually hidden content is indexed by Google.
+
+## Title attribute
+
+- Use for advisory information only. Not essential (in which case put it in the content) or
+  rendundant.
+- Often ignored by screen readers except for:
+  1. Form elements that don't have labels
+  2. iframes
+  3. `<abbr>` depending on SR settings.
+- Not accessible to keyboard users, touch screen users, etc.
 
