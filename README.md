@@ -70,6 +70,8 @@
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
+My notes from the (highly recommended) [WebAIM training session](http://webaim.org/training/), January 2017.
+
 # Why we do it
 ## Affects people
 8.5% of US population has a disability that affects computer use (including
@@ -638,12 +640,30 @@ Automated tools have their place, but only humans can truly evaulate accessibili
 - Technology agnostic.
   - Better over time, but perhaps more difficult to interpret.
 
-### Success Criteria 1.3.1 - Info and Relationships
+### Structure
+
+#### Normative
+
+- Hierarchy: Principles -> Guidelines -> Success Criteria.
+  - e.g., 1. Perceivable -> 1.1 Text Alternatives -> 1.1.1 Non-text Content 
+- "Required for conformance"
+- Conformance (and levels) based on Success Criteria.
+
+#### Non-normative
+- "For information purposes and not required conformance".
+- Supporting materials for the normative material.
+- Over a thousand pages. A good indication that WCAG doesn't meet its own
+  principle of Understanable.
+- "Understanding..." and "How to meet..." for each normative section.
+
+### Notable sections
+
+#### Success Criteria 1.3.1 - Info and Relationships
 
 > Information, structure, and relationships conveyed through presentation can be programatically determined or are available in text. (Level A)
   - Includes proper labels, heading, etc.
 
-### SC 1.4.4 Resize text
+#### SC 1.4.4 Resize text
 
 > Except for captions and images of text, text can be resized without assistive technology up to 200 percent without loss of content or functionality. (Level AA)
 
@@ -651,7 +671,7 @@ Automated tools have their place, but only humans can truly evaulate accessibili
 - Very few users will increase text size 200%. Testing 130-150% is sufficient.
 - Beware of fixed height in CSS.
 
-### SC 2.2.2 Pause, Stop, Hide
+#### SC 2.2.2 Pause, Stop, Hide
 
 > For moving, blinking, scrolling, or auto-updating information, all of the following are true: (Level A)
 > Moving, blinking, scrolling: For any moving, blinking or scrolling information that (1) starts automatically, (2) lasts more than five seconds, and (3) is presented in parallel with other content, there is a mechanism for the user to pause, stop, or hide it unless the movement, blinking, or scrolling is part of an activity where it is essential; and
@@ -659,19 +679,6 @@ Automated tools have their place, but only humans can truly evaulate accessibili
 
 Users need to be able to pause carousels, for example.
 
-### Normative
-
-- Hierarchy: Principles -> Guidelines -> Success Criteria.
-  - e.g., 1. Perceivable -> 1.1 Text Alternatives -> 1.1.1 Non-text Content 
-- "Required for conformance"
-- Conformance (and levels) based on Success Criteria.
-
-### Non-normative
-- "For information purposes and not required conformance".
-- Supporting materials for the normative material.
-- Over a thousand pages. A good indication that WCAG doesn't meet its own
-  principle of Understanable.
-- "Understanding..." and "How to meet..." for each normative section.
 
 ## WCAG 2.1 
 
