@@ -119,6 +119,7 @@ than implicit labeling (`<label><input /></label>`).
 - If there's no `<label>`, `title` on the input is interpreted as the label by
   screen readers. Equivalent to a visually hidden label but adds the tooltip
   for mouse users. `<input title="Search Terms" type="search" />`
+- A screen reader will treat `<label>`, `title`, and `aria-label` identically.
 
 ##### Placeholder
 
@@ -139,6 +140,15 @@ than implicit labeling (`<label><input /></label>`).
 - Be very careful with "Reset" buttons. (You probably don't need it.)
 - `<input type="image">` must have alternative text.
 - You'll never be able to re-create all of the accessibility of a `<select>`.
+
+##### Limitations with `<label>`
+
+1:1 relationship between `<label>` and a form control.
+- <label> can't apply to more than one control.
+- Control can't have more than one <label>.
+
+See: [`aria-labelledby`](#aria-labelledby).
+
 
 #### Tables
 
@@ -383,3 +393,34 @@ For a page part in a different language: `<div lang="fr">`
   3. `<abbr>` depending on SR settings.
 - Not accessible to keyboard users, touch screen users, etc.
 
+## CSS generated content (::before, ::after)
+
+May or may not be read by screen readers. Assume the worst.
+
+# ARIA (Accessible Rich Internet Applications)
+
+A specification that allows enhancements to accessibility.
+
+- Foundational rule of ARIA: if you can do it with HTML (rather than ARIA), you
+  must.
+
+## `aria-label`
+`aria-label` can be used instead of (and will override) content. E.g., `<a
+aria-label="Facebook"><span class="icon-facebook" aria-hidden="true"></span></a>`.
+
+## `aria-labelledby`
+
+`aria-labelledby` can be used to link multiple inputs to one label and vice
+versa.
+`<input aria-labelledby="cyndi officenum"`> for Cyndi's office number.
+Any element can be the target for `aria-labelledby`. E.g., use an input to
+label another:
+
+```html
+<input id="name">
+<span id="phone">Phone number</span>
+<input aria-labelledby="name phone">
+```
+
+If `name`'s value is Cindy, the second input should be read "Cindy phone
+number, edit".
