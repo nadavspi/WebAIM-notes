@@ -6,6 +6,7 @@
   - [Affects people](#affects-people)
   - [Market share](#market-share)
   - [Search engine benefits](#search-engine-benefits)
+- [Strategy / principles](#strategy--principles)
 - [WCAG](#wcag)
   - [Principles](#principles)
   - [Levels of conformance](#levels-of-conformance)
@@ -18,6 +19,9 @@
   - [Blindness](#blindness)
     - [Semantics](#semantics)
       - [Headings](#headings)
+      - [New HTML5 elements](#new-html5-elements)
+      - [Links and buttons](#links-and-buttons)
+      - [tabindex](#tabindex)
       - [Forms](#forms)
         - [Hidden labels](#hidden-labels)
         - [Placeholder](#placeholder)
@@ -30,6 +34,7 @@
     - [Meaningful link text](#meaningful-link-text)
       - [Page title (`<title>`)](#page-title-title)
       - [iframe](#iframe)
+      - [`<video>` and `<audio>`](#video-and-audio)
   - [Cognitive/learning disabilities](#cognitivelearning-disabilities)
   - [Photosensitive epilepsy](#photosensitive-epilepsy)
   - [Motor disabilities](#motor-disabilities)
@@ -40,7 +45,6 @@
       - [Standard keystrokes](#standard-keystrokes)
       - [Accesskey](#accesskey)
     - [Timed activities](#timed-activities)
-- [Strategy / principles](#strategy--principles)
 - [Odds & ends](#odds--ends)
   - [Acronyms & abbreviations](#acronyms--abbreviations)
   - [Fonts](#fonts)
@@ -49,22 +53,37 @@
   - [Title attribute](#title-attribute)
   - [CSS generated content (::before, ::after)](#css-generated-content-before-after)
 - [ARIA (Accessible Rich Internet Applications)](#aria-accessible-rich-internet-applications)
-  - [`aria-label`](#aria-label)
-  - [`aria-labelledby`](#aria-labelledby)
-  - [`aria-describedby`](#aria-describedby)
-  - [`aria-required`](#aria-required)
-  - [`aria-invalid`](#aria-invalid)
-  - [`aria-disabled`](#aria-disabled)
+  - [Core components](#core-components)
+  - [Notable roles](#notable-roles)
+    - [`role="search"`](#rolesearch)
+    - [Generic regions (`role="region"`)](#generic-regions-roleregion)
+    - [`role="presentation"`](#rolepresentation)
+    - [`role="alert"`](#rolealert)
+  - [Notable states/properties](#notable-statesproperties)
+    - [`aria-label`](#aria-label)
+    - [`aria-labelledby`](#aria-labelledby)
+    - [`aria-describedby`](#aria-describedby)
+    - [`aria-required`](#aria-required)
+    - [`aria-invalid`](#aria-invalid)
+    - [`aria-disabled`](#aria-disabled)
+    - [`aria-haspopup`](#aria-haspopup)
+    - [`aria-pressed`](#aria-pressed)
+  - [Dynamic content](#dynamic-content)
+    - [Live regions](#live-regions)
+    - [Single page apps](#single-page-apps)
 - [Evaluating accessibility](#evaluating-accessibility)
+  - [Windows screen reader modes](#windows-screen-reader-modes)
 - [Evolution of web accessibility guidelines](#evolution-of-web-accessibility-guidelines)
   - [WCAG 1.0](#wcag-10)
   - [Section 508](#section-508)
   - [WCAG 2.0](#wcag-20)
-    - [Success Criteria 1.3.1 - Info and Relationships](#success-criteria-131---info-and-relationships)
-    - [SC 1.4.4 Resize text](#sc-144-resize-text)
-    - [SC 2.2.2 Pause, Stop, Hide](#sc-222-pause-stop-hide)
-    - [Normative](#normative)
-    - [Non-normative](#non-normative)
+    - [Structure](#structure)
+      - [Normative](#normative)
+      - [Non-normative](#non-normative)
+    - [Notable sections](#notable-sections)
+      - [Success Criteria 1.3.1 - Info and Relationships](#success-criteria-131---info-and-relationships)
+      - [SC 1.4.4 Resize text](#sc-144-resize-text)
+      - [SC 2.2.2 Pause, Stop, Hide](#sc-222-pause-stop-hide)
   - [WCAG 2.1](#wcag-21)
   - [Americans with Disabilities Act (ADA)](#americans-with-disabilities-act-ada)
 
@@ -95,6 +114,21 @@ Their experience of the world isn't different. Imagine if some websites didn't
 work with contacts or glasses.
 
 ---
+
+# Strategy / principles
+
+Think about an entire process or workflow. If you signal that the purchase
+workflow is accessible but the last submit button is inaccessible, that's
+probably worse than no accessibility from the start (like having an accessible traffic signal
+but no curved sidewalk on the other side).
+
+A separate accessible or text-only version of the site is probably a bad idea.
+- Might be considered discrimination: "separate", "unequal", "untimely".
+- More overhead in maintaning two sites, risk of them getting out of sync.
+- In WebAIM surveys, most users don't use separate accessible or text-only
+  versions, assuming they'll be out of date.
+- Thinking about accessibility & semantic markup for your website improves the
+  experience for everyone.
 
 # WCAG
 
@@ -180,12 +214,45 @@ Guidelines:
 
 It's OK to style headings visually to maintain semantics within the design (`<h2 class="h4">`).
 
+#### New HTML5 elements
+- `<nav>`, `<header>`, `<main>`, `<footer>`, etc.
+- Use these. One of the most significant things you can do to increase
+  accessibility.
+- Screen readers allow navigation by landmarks. 
+
+#### Links and buttons
+
+- Links open a new page or jump to another location within the existing page.
+- Buttons submit form data or perform an in-page function.
+- An `<a>` without an `href` has a role of `text` (basically identical to a `<span>`). No
+  semantics, no keyboard interactivity, etc. Use a button.
+
+#### tabindex
+
+- Avoid tabindex unless you're sure you know what you're doing.
+- If the default tab order is not logical, fix your source code order.
+- Tabindex values:
+  - `1` or greater: defined an explicit tab order. Avoid this. If you do it, you
+    basically have to define it on every single focusable element. It almost
+    never improves accessibility.
+  - `0`: allows elements that aren't links or form elements to receive keyboard
+    focus.
+  - `-1`: allows elements that aren't links or form elements to receive
+    *programmatic* focus.
+    - Necessary for focusing dialog boxes, error messages, etc.
+    - Warning: removes the element from the default tab order. 
+- Warning: click events do not always trigger via keyboard for elements that
+  aren't links or form elements (even with `tabindex="0"`).
+  - You have to also listen for enter or space keypress.
+  - Just use a `<button>`.
+
 #### Forms
 
 - Use labels for inputs, text areas, select menus, checkboxes, radio buttons.
 - Never use `<label`> for anything else - it'll be ignored by screen readers.
 - Explicit labeling (`<label for="thing"><input id="thing" />`) is a little more robust
 than implicit labeling (`<label><input /></label>`).
+- Hopefully browser (will) provide natively accessible interfaces for new HTML5 input types. Can use feature detection to add custom interfaces when necessary.
 
 ##### Hidden labels
 
@@ -322,6 +389,11 @@ a link) or poor link text (it should just say "Login").
   you probably don't need a title. Despite what some tools say, `title` is not
   *required* for iframes.
 
+#### `<video>` and `<audio>`
+
+- Native video and captioning support.
+- WebVTT captioning format is the accepted format.
+
 ## Cognitive/learning disabilities
 
 The largest disability group - larger than all the others put together - but so varied that it's hard to make general recommendations.
@@ -423,21 +495,6 @@ Don't do it.
 - Make sure the users knows what the time constraints are.
 - Maybe prompt the user before time is up and allow them to extend.
 
-# Strategy / principles
-
-Think about an entire process or workflow. If you signal that the purchase
-workflow is accessible but the last submit button is inaccessible, that's
-probably worse than no accessibility from the start (like having an accessible traffic signal
-but no curved sidewalk on the other side).
-
-A separate accessible or text-only version of the site is probably a bad idea.
-- Might be considered discrimination: "separate", "unequal", "untimely".
-- More overhead in maintaning two sites, risk of them getting out of sync.
-- In WebAIM surveys, most users don't use separate accessible or text-only
-  versions, assuming they'll be out of date.
-- Thinking about accessibility & semantic markup for your website improves the
-  experience for everyone.
-
 # Odds & ends
 
 - Whether or not your site should work without JavaScript is more of a usability
@@ -502,16 +559,75 @@ May or may not be read by screen readers. Assume the worst.
 
 # ARIA (Accessible Rich Internet Applications)
 
-A specification that allows enhancements to accessibility.
+- A specification that allows enhancements to accessibility.
+- Expands the vocabulary of HTML to support what screen readers already understand.
+  - E.g., there's no `<slider>` but screen readers already know what they are
+    (because they appear in non-web interfaces).
+- WAI-ARIA 1.0 is a W3C Recommendation.
+- 1.1 is a W3C Candidate Recommendation (basically ready to be approved).
+  - Some features already supported by browser.
+- Rule #1 of ARIA: don't use ARIA unless you must. 
+  - If you can do it with HTML (rather than ARIA), do so.
+- Enhances accessibility of...
+  - Dynamic content and Ajax.
+  - Script widgets and interactive (non-standard) controls.
+  - Keyboard interactions within a web page.
+- Doesn't change functionality, only what's presented to screen readers via
+  accessibility APIs.
+- Consult the [Design Patterns](https://www.w3.org/TR/wai-aria-practices-1.1/#aria_ex) document for building custom interfaces.
 
-- Foundational rule of ARIA: if you can do it with HTML (rather than ARIA), you
-  must.
+## Core components
 
-## `aria-label`
+1. Roles 
+2. States
+  - `aria-disabled`, `aria-checked`, etc.
+  - Be careful to avoid conflicts between HTML properties and ARIA states/properties.
+3. Properties
+  - `aria-label`, `aria-described`, etc.
+
+## Notable roles
+
+- Avoid duplicating native roles. E.g., `<button role="button">`. A waste of
+  markup and has the potential to become broken.
+- Overrides native HTML roles, but does not change functionality.
+- Be careful: you can destroy accessibility with an incorrect role. 
+  - `<input type="checkbox" role="radio">`
+  - Any time you add a role, check the documentation to make sure you're
+    doing it correctly.
+- Use HTML5 elements if you can. E.g., `<main>` instead of `role="main"`,
+  `<footer>` instead of `role="contentinfo"`.
+- You can use `aria-label` (or heading a `aria-labelledby`) to differentiate multiple landmarks of the same type. 
+
+### `role="search"`
+- No HTML equivalent. Use on search forms.
+
+### Generic regions (`role="region"`)
+- Allows you to define your own custom region that will show up in
+regions/landmark list.
+- Must have a label. (`aria-label` or preferably a heading and
+    `aria-labelledby`)
+- Don't add too many - landmarks are useful in small quantities.
+
+### `role="presentation"` 
+- Removes native role. 
+- Useful when something is a list or a table for presentation purposes
+    only.
+
+### `role="alert"`
+- The element must be present in the DOM on page load and updated later.
+- Will be read immediately without changing focus.
+- Updating the content a second time won't be announced. Unset and set the role
+  again.
+
+## Notable states/properties
+
+### `aria-label`
+
 `aria-label` can be used instead of (and will override) content. E.g., `<a
 aria-label="Facebook"><span class="icon-facebook" aria-hidden="true"></span></a>`.
 
-## `aria-labelledby`
+
+### `aria-labelledby`
 
 `aria-labelledby` can be used to link multiple inputs to one label and vice
 versa.
@@ -528,7 +644,7 @@ label another:
 If `name`'s value is Cindy, the second input should be read "Cindy phone
 number, edit".
 
-## `aria-describedby`
+### `aria-describedby`
 
 - Adds an additional level of description beyond labels. 
 - There is no aria-description. 
@@ -544,7 +660,7 @@ number, edit".
 Screen reader will read label, input type, description. "Username, edit,
 username must be 8-15 characters".
 
-## `aria-required`
+### `aria-required`
 
 `<input aria-required="true">`
 
@@ -552,7 +668,7 @@ username must be 8-15 characters".
 - Doesn't actually change functionality, just an indicator.
 - Not necessary if you're using `required` or if there isn't a visual indicator that the field is required.
 
-## `aria-invalid`
+### `aria-invalid`
 
 `<input aria-invalid="true">`
 
@@ -560,13 +676,45 @@ username must be 8-15 characters".
 - Use in conjunction with a visual indicator.
 - Can be used for styling. `[aria-invalid="true"] { border: 2px solid red; }`
 
-## `aria-disabled`
+### `aria-disabled`
 
 - `aria-disabled` elements are keyboard accessible, whereas `disabled` elements
   are removed from keyboard navigation. 
 - Arguably `aria-disabled` is better than `disabled` for the submit button of
   an invalid form. However, `aria-disabled` doesn't actually disable the button so you'd need to
   preventDefault.
+
+### `aria-haspopup`
+
+- Indicates to a screen reader user that activation will trigger a popup.
+
+### `aria-pressed`
+
+`<button aria-pressed="true">Toggle Highlights</button>`
+
+- Indicates state of a toggle button.
+
+## Dynamic content 
+
+### Live regions
+
+- Allow you to update content dynamically in a way that'll be announced.
+- `aria-live` values
+  - `assertive` - read now
+  - `polite` - read at a pause
+  - `off` - read when the user encounters it
+- `aria-atomic` - read the entire region or only what has changed
+
+### Single page apps
+
+- Document structure is still important.
+  - Use structural elements (`<main>`) for content updates.
+- Update page title to reflect content/state.
+- Keyboard navigation
+  - Ensure only visible elements are navigable.
+  - Manage focus when necessary.
+    - E.g., focus on new section that becomes visible.
+- Use live regions for messaging if necessary.
 
 # Evaluating accessibility
 
@@ -609,6 +757,31 @@ Automated tools have their place, but only humans can truly evaulate accessibili
     testing, and *include* users with disabilities.
   - If you do user testing with disabled users, make sure you have some base
     level of accessibility together beforehand.
+
+## Windows screen reader modes
+- The active mode determines whether the screen reader or browser handles most
+keyboard commands.
+- Windows only. (Not applicable to Mac since VoiceOver modifiers for all
+  commands.)
+- The modes:
+  1. Reading / virtual cursor / document mode
+    - Screen reader handles most things.
+    - Can be triggered with `role="document"`
+  2. Forms / application mode
+    - Key presses go directly to the browser. 
+      - Bypasses the screen reader with a few exceptions (tab, shift-tab, enter,
+        space)
+      - E.g., to override screen reader shortcuts with app-specific keyboard shortcuts.
+    - Can be triggered with `role="application"`. Be very careful.
+- Some ARIA roles (tree, slider, grid, tabpanel, menu, dialog etc.) trigger forms
+  mode.
+  - You must ensure the user is aware and that the proper keyboard interactions
+    are implemented.
+  - Everything inside of these must be keyboard accessible. E.g., you'd only
+    use `role="dialog"` if it just contains a form.
+  - Test with and without a screen reader.
+
+
 
 # Evolution of web accessibility guidelines
 
